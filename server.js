@@ -17,7 +17,9 @@ app.use(express.json({ limit: "100kb" }));
 
 const GROQ_API_KEY = process.env.GROQ_API_KEY;
 const GROQ_URL = "https://api.groq.com/openai/v1/chat/completions";
-const GROQ_MODEL = process.env.GROQ_MODEL || "llama-3.1-8b-instant";
+// llama-3.1-8b-instant was deprecated by Groq (announced June 2026); this
+// is their recommended 1:1 replacement for free/developer-tier usage.
+const GROQ_MODEL = process.env.GROQ_MODEL || "openai/gpt-oss-20b";
 
 if (!GROQ_API_KEY) {
   console.error("Missing GROQ_API_KEY environment variable. Set it before starting the server.");
