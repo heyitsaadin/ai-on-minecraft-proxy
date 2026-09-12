@@ -69,7 +69,7 @@ app.post("/chat", async (req, res) => {
       body: JSON.stringify({
         model: GROQ_MODEL,
         messages,
-        max_tokens: 200,
+        max_tokens: 1000,
         temperature: 0.9,
       }),
     });
