@@ -54,7 +54,14 @@ app.post("/chat", async (req, res) => {
     if (typeof m.role !== "string" || typeof m.content !== "string") {
       return res.status(400).json({ error: "Each message needs a string 'role' and 'content'." });
     }
-    if (m.content.length > 2000) {
+    // Was capped at 2000, but a single detailed AI reply (crafting steps,
+    // enchant guides, etc.) can legitimately run longer than that -- and
+    // since that reply then sits in every subsequent request's history
+    // until it ages out of the client's memory window, a too-low cap here
+    // caused every follow-up message to get rejected with 400 until the
+    // long reply scrolled out. 6000 gives real headroom for a genuinely
+    // long, detailed answer while still blocking abuse-sized payloads.
+    if (m.content.length > 6000) {
       return res.status(400).json({ error: "A message is too long." });
     }
   }
